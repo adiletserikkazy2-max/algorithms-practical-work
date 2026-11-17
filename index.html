@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Практическая работа — Алгоритмы</title>
+  <style>
+    :root{--navy:#0b1739;--blue:#2563eb;--cyan:#06b6d4;--bg:#f3f7fc;--card:#fff;--ink:#182238;--muted:#64748b;--line:#dbe4f0;--ok:#15803d;--bad:#c2410c}
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;background:linear-gradient(145deg,#edf5ff 0%,#f8fafc 42%,#eef9fb 100%);color:var(--ink);font-family:Inter,Arial,sans-serif}
+    .hero{background:radial-gradient(circle at 85% 10%,rgba(6,182,212,.28),transparent 27%),linear-gradient(135deg,#07132f,#11275f);color:#fff;padding:58px 22px 70px}
+    .wrap{width:min(980px,100%);margin:auto}.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border:1px solid rgba(255,255,255,.22);border-radius:999px;background:rgba(255,255,255,.08);font-size:14px;font-weight:800;letter-spacing:.03em}
+    h1{max-width:760px;margin:20px 0 14px;font-size:clamp(34px,6vw,64px);line-height:1.02;letter-spacing:-.035em}.lead{max-width:710px;margin:0;color:#d9e5ff;font-size:19px;line-height:1.6}
+    .stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.stat{padding:10px 14px;background:rgba(255,255,255,.09);border-radius:12px;color:#e9f1ff;font-weight:700}
+    main{width:min(980px,calc(100% - 28px));margin:-34px auto 60px}.panel{background:var(--card);border:1px solid rgba(219,228,240,.95);border-radius:22px;box-shadow:0 18px 50px rgba(20,45,90,.10);padding:28px;margin-bottom:18px}
+    .panel h2{margin:0 0 8px;font-size:24px}.muted{color:var(--muted);line-height:1.55}.identity{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-top:20px}
+    label.field span{display:block;margin:0 0 7px;font-weight:800}.input,select,textarea{width:100%;padding:13px 14px;border:1px solid #cbd7e6;border-radius:11px;background:#fff;color:var(--ink);font-size:16px;outline:none}.input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.12)}textarea{min-height:112px;resize:vertical;font-family:inherit;line-height:1.5;margin-top:18px}
+    .progress-shell{position:sticky;top:0;z-index:10;background:rgba(243,247,252,.92);backdrop-filter:blur(10px);padding:12px 0}.progress-row{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:800;color:#475569}.progress{height:9px;flex:1;background:#dbe5f2;border-radius:99px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:.25s}
+    .question{scroll-margin-top:78px}.qhead{display:flex;gap:14px;align-items:flex-start}.num{flex:0 0 40px;height:40px;display:grid;place-items:center;border-radius:12px;background:#eaf1ff;color:#1746a2;font-size:18px;font-weight:900}.qtitle{margin:2px 0 4px;font-size:20px}.points{color:var(--muted);font-size:14px;font-weight:700}.options{display:grid;gap:10px;margin-top:18px}.option{display:flex;gap:11px;align-items:flex-start;padding:13px 14px;border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:.16s}.option:hover{border-color:#9db8ef;background:#f8fbff}.option input{margin-top:3px;accent-color:var(--blue);transform:scale(1.12)}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.match{padding:13px;border:1px solid var(--line);border-radius:12px}.match b{display:block;margin-bottom:8px}.sequence{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin-top:18px}.sequence label{text-align:center;font-size:13px;font-weight:800;color:#526174}.sequence input{margin-top:6px;text-align:center}
+    .actions{display:flex;gap:12px;align-items:center;justify-content:flex-end;flex-wrap:wrap}.btn{border:0;border-radius:12px;padding:14px 19px;font-size:16px;font-weight:900;cursor:pointer}.primary{background:linear-gradient(135deg,var(--blue),#1746a2);color:#fff;box-shadow:0 8px 20px rgba(37,99,235,.24)}.secondary{background:#eaf0f8;color:#334155}.btn:hover{filter:brightness(.98);transform:translateY(-1px)}
+    .result{display:none}.result.show{display:block}.score-ring{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;margin:10px auto 18px;background:conic-gradient(var(--blue) calc(var(--score)*1%),#e4ebf4 0);position:relative}.score-ring:before{content:"";position:absolute;inset:13px;border-radius:50%;background:#fff}.score-ring strong{position:relative;font-size:32px}.grade{text-align:center;font-size:26px;font-weight:900}.student-result{text-align:center;color:var(--muted);margin-top:8px}.review{display:grid;gap:10px;margin-top:22px}.review-item{padding:12px 14px;border-radius:11px;border-left:5px solid}.right{background:#eefbf2;border-color:var(--ok)}.wrong{background:#fff5ed;border-color:var(--bad)}
+    .notice{padding:13px 15px;background:#fff8e6;border:1px solid #f0d792;border-radius:12px;color:#744a00;line-height:1.5;margin-top:15px}.error{display:none;margin-top:12px;color:#b42318;font-weight:800}.error.show{display:block}
+    footer{text-align:center;color:#7a879a;padding:10px 20px 38px}.hidden-print{display:block}
+    .langSwitch{position:fixed;left:14px;bottom:14px;z-index:30;display:flex;gap:5px;background:#fff;padding:5px;border-radius:999px;box-shadow:0 8px 22px #0003}.langSwitch button,.adminBtn{border:0;border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.langSwitch button{background:#e2e8f0;color:#0f172a}.langSwitch button.active{background:var(--blue);color:#fff}.adminBtn{position:fixed;right:14px;bottom:14px;z-index:30;background:#111827;color:#fff;box-shadow:0 8px 22px #0004}.timer{font-family:monospace;background:#07132f;color:#fff;padding:9px 12px;border-radius:10px;font-weight:900}.warningOverlay{display:none;position:fixed;inset:0;z-index:100;background:#7f1d1de8;align-items:center;justify-content:center;padding:20px}.warningOverlay.show{display:flex}.warningCard{max-width:520px;background:#fff;border:5px solid #dc2626;border-radius:22px;padding:25px;text-align:center}.warningCard h2{margin:0 0 10px;color:#b91c1c}.warningCard p{color:#7f1d1d;font-size:18px;font-weight:800;line-height:1.45}.locked{opacity:.65;pointer-events:none}
+    @media(max-width:720px){.identity,.grid2{grid-template-columns:1fr}.sequence{grid-template-columns:repeat(3,1fr)}.panel{padding:21px}.hero{padding-top:42px}.actions{justify-content:stretch}.btn{width:100%}}
+    @media print{.hero,.progress-shell,.actions,.notice,.hidden-print{display:none!important}body{background:#fff}.panel{box-shadow:none;break-inside:avoid}.result{display:block!important}}
+  </style>
+</head>
+<body>
+  <div id="warningOverlay" class="warningOverlay"><div class="warningCard"><h2>⚠ ПРЕДУПРЕЖДЕНИЕ</h2><p id="warningText"></p><button class="btn primary" type="button" onclick="closeWarning()">Понятно</button></div></div>
+  <div class="langSwitch"><button id="ruBtn" class="active" type="button" onclick="setLang('ru')">РУС</button><button id="kkBtn" type="button" onclick="setLang('kk')">ҚАЗ</button></div>
+  <button class="adminBtn" type="button" onclick="adminUnlock()">🔐 Админ</button>
+  <header class="hero"><div class="wrap">
+    <div class="eyebrow">ИНТЕРАКТИВНАЯ ПРАКТИЧЕСКАЯ РАБОТА</div>
+    <h1>Определение алгоритма</h1>
+    <p class="lead">Проверьте знания об алгоритмах, их исполнителях, свойствах и основных конструкциях. После завершения вы сразу увидите результат и оценку.</p>
+    <div class="stats"><span class="stat">10 заданий</span><span class="stat">100 баллов</span><span class="stat">Автоматическая проверка</span><span class="timer" id="timer">30:00</span></div>
+  </div></header>
+
+  <main>
+    <section class="panel">
+      <h2>Данные студента</h2><p class="muted">Заполните поля перед началом работы. Ответьте на все вопросы и нажмите «Завершить работу».</p>
+      <div class="identity" style="grid-template-columns:2fr 1fr 1fr">
+        <label class="field"><span>Фамилия и имя</span><input class="input" id="student" placeholder="Например: Айбек Сериков" autocomplete="name"></label>
+        <label class="field"><span>Группа</span><input class="input" id="group" placeholder="Например: ИС-23-1"></label>
+        <label class="field"><span>Номер студента</span><select id="studentNumber"><option value="">Выберите</option></select></label>
+      </div>
+      <div class="notice">Результат показывается на этом устройстве. После проверки сохраните его кнопкой «Печать или PDF» либо сделайте снимок экрана.</div>
+    </section>
+
+    <div class="progress-shell"><div class="wrap"><div class="progress-row"><span id="progressText">Заполнено 0 из 10</span><div class="progress"><div class="bar" id="bar"></div></div></div></div></div>
+
+    <form id="quiz">
+      <section class="panel question" data-q="q1"><div class="qhead"><div class="num">1</div><div><h2 class="qtitle">Что такое алгоритм?</h2><div class="points">10 баллов — ответьте своими словами</div></div></div>
+        <textarea id="q1text" placeholder="Напишите определение алгоритма"></textarea>
+      </section>
+
+      <section class="panel question" data-q="q2"><div class="qhead"><div class="num">2</div><div><h2 class="qtitle">Кто может быть исполнителем алгоритма?</h2><div class="points">10 баллов — приведите примеры и пояснение</div></div></div>
+        <textarea id="q2text" placeholder="Например: человек, устройство…"></textarea>
+      </section>
+
+      <section class="panel question" data-q="q3"><div class="qhead"><div class="num">3</div><div><h2 class="qtitle">Расположите команды приготовления чая</h2><div class="points">10 баллов — введите номера от 1 до 6</div></div></div><div class="sequence">
+        <label>Подготовить чашку<input class="input seq" data-step="1" inputmode="numeric" maxlength="1"></label>
+        <label>Вскипятить воду<input class="input seq" data-step="2" inputmode="numeric" maxlength="1"></label>
+        <label>Положить чай<input class="input seq" data-step="3" inputmode="numeric" maxlength="1"></label>
+        <label>Налить кипяток<input class="input seq" data-step="4" inputmode="numeric" maxlength="1"></label>
+        <label>Подождать<input class="input seq" data-step="5" inputmode="numeric" maxlength="1"></label>
+        <label>Убрать пакетик<input class="input seq" data-step="6" inputmode="numeric" maxlength="1"></label>
+      </div></section>
+
+      <section class="panel question" data-q="q4"><div class="qhead"><div class="num">4</div><div><h2 class="qtitle">Как правильно начать переход через дорогу?</h2><div class="points">10 баллов</div></div></div><div class="options">
+        <label class="option"><input type="radio" name="q4" value="a">Сразу перейти дорогу, затем посмотреть по сторонам</label>
+        <label class="option"><input type="radio" name="q4" value="b">Остановиться, посмотреть налево и направо, убедиться в безопасности</label>
+        <label class="option"><input type="radio" name="q4" value="c">Быстро перебежать в любом месте</label>
+      </div></section>
+
+      <section class="panel question" data-q="q5"><div class="qhead"><div class="num">5</div><div><h2 class="qtitle">Какой алгоритм является линейным?</h2><div class="points">10 баллов</div></div></div><div class="options">
+        <label class="option"><input type="radio" name="q5" value="a">Если идёт дождь, взять зонт, иначе идти без зонта</label>
+        <label class="option"><input type="radio" name="q5" value="b">Открыть документ, ввести текст, сохранить файл</label>
+        <label class="option"><input type="radio" name="q5" value="c">Повторить упражнение десять раз</label>
+      </div></section>
+
+      <section class="panel question" data-q="q6"><div class="qhead"><div class="num">6</div><div><h2 class="qtitle">Определите результат для числа −7</h2><div class="points">10 баллов — алгоритм проверяет знак числа</div></div></div><div class="options">
+        <label class="option"><input type="radio" name="q6" value="a">Число положительное</label>
+        <label class="option"><input type="radio" name="q6" value="b">Число отрицательное</label>
+        <label class="option"><input type="radio" name="q6" value="c">Число равно нулю</label>
+      </div></section>
+
+      <section class="panel question" data-q="q7"><div class="qhead"><div class="num">7</div><div><h2 class="qtitle">Настройте цикл вывода чисел от 1 до 10</h2><div class="points">10 баллов</div></div></div><div class="grid2">
+        <label class="match"><b>Начальное значение i</b><select id="q7a"><option value="">Выберите</option><option>0</option><option>1</option><option>10</option></select></label>
+        <label class="match"><b>Условие продолжения</b><select id="q7b"><option value="">Выберите</option><option value="lt">i &lt; 10</option><option value="le">i ≤ 10</option><option value="gt">i &gt; 10</option></select></label>
+      </div></section>
+
+      <section class="panel question" data-q="q8"><div class="qhead"><div class="num">8</div><div><h2 class="qtitle">Соотнесите описание и свойство алгоритма</h2><div class="points">10 баллов</div></div></div><div class="grid2">
+        <label class="match"><b>Состоит из отдельных шагов</b><select id="q8a"><option value="">Выберите</option><option value="d">Дискретность</option><option value="m">Массовость</option><option value="r">Результативность</option></select></label>
+        <label class="match"><b>Завершается получением результата</b><select id="q8b"><option value="">Выберите</option><option value="d">Дискретность</option><option value="m">Массовость</option><option value="r">Результативность</option></select></label>
+      </div></section>
+
+      <section class="panel question" data-q="q9"><div class="qhead"><div class="num">9</div><div><h2 class="qtitle">Определите виды алгоритмов</h2><div class="points">10 баллов</div></div></div><div class="grid2">
+        <label class="match"><b>Определение большего из двух чисел</b><select id="q9a"><option value="">Выберите</option><option value="l">Линейный</option><option value="b">Разветвляющийся</option><option value="c">Циклический</option></select></label>
+        <label class="match"><b>Повторение упражнения 10 раз</b><select id="q9b"><option value="">Выберите</option><option value="l">Линейный</option><option value="b">Разветвляющийся</option><option value="c">Циклический</option></select></label>
+      </div></section>
+
+      <section class="panel question" data-q="q10"><div class="qhead"><div class="num">10</div><div><h2 class="qtitle">Составьте алгоритм робота-пылесоса</h2><div class="points">10 баллов — учитывается смысл и полнота ответа</div></div></div>
+        <textarea id="q10text" placeholder="Опишите последовательность действий робота"></textarea>
+      </section>
+
+      <section class="panel"><div class="actions"><button type="button" class="btn secondary" id="clearBtn">Очистить ответы</button><button type="submit" class="btn primary">Завершить работу</button></div><div class="error" id="error">Заполните ФИО, группу и ответьте на все задания.</div></section>
+    </form>
+
+    <section class="panel result" id="result">
+      <h2 style="text-align:center">Результат работы</h2>
+      <div class="score-ring" id="ring" style="--score:0"><strong id="score">0%</strong></div>
+      <div class="grade" id="grade"></div><div class="student-result" id="studentResult"></div>
+      <div class="review" id="review"></div>
+      <div class="actions" style="margin-top:22px"><button class="btn secondary" type="button" onclick="window.print()">Печать или PDF</button><button class="btn primary" type="button" onclick="location.reload()">Пройти заново</button></div>
+    </section>
+  </main>
+  <footer>Практическая работа по теме «Определение алгоритма и исполнители алгоритмов»</footer>
+
+  <script>
+    const RESULTS_URL='PASTE_GOOGLE_APPS_SCRIPT_URL_HERE';
+    const DURATION=30*60;
+    let siteLang=localStorage.getItem('algorithms_language')||'ru',remaining=DURATION,timerId=null,started=false,violationCount=0,submitting=false;
+    const $=id=>document.getElementById(id);
+    const studentNumber=$('studentNumber');
+    studentNumber.innerHTML='<option value="">Выберите</option>'+Array.from({length:59},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('');
+    const KZ={
+      'ИНТЕРАКТИВНАЯ ПРАКТИЧЕСКАЯ РАБОТА':'ИНТЕРАКТИВТІ ПРАКТИКАЛЫҚ ЖҰМЫС','Определение алгоритма':'Алгоритмнің анықтамасы','Данные студента':'Студент деректері','Фамилия и имя':'Аты-жөні','Группа':'Топ','Номер студента':'Студент нөмірі','Выберите':'Таңдаңыз','Заполнено':'Толтырылды','из':'ішінен','баллов':'балл','Завершить работу':'Жұмысты аяқтау','Очистить ответы':'Жауаптарды тазалау','Результат работы':'Жұмыс нәтижесі','Печать или PDF':'Басып шығару немесе PDF','Пройти заново':'Қайта өту','Отлично — 5':'Өте жақсы — 5','Хорошо — 4':'Жақсы — 4','Удовлетворительно — 3':'Қанағаттанарлық — 3','Требуется повторение — 2':'Қайталау қажет — 2','Что такое алгоритм?':'Алгоритм дегеніміз не?','Кто может быть исполнителем алгоритма?':'Алгоритм орындаушысы кім бола алады?','Расположите команды приготовления чая':'Шай дайындау командаларын реттеңіз','Как правильно начать переход через дорогу?':'Жолдан өтуді қалай дұрыс бастау керек?','Какой алгоритм является линейным?':'Қай алгоритм сызықтық?','Определите результат для числа −7':'−7 саны үшін нәтижені анықтаңыз','Настройте цикл вывода чисел от 1 до 10':'1-ден 10-ға дейінгі сандарды шығару циклін баптаңыз','Соотнесите описание и свойство алгоритма':'Сипаттаманы алгоритм қасиетімен сәйкестендіріңіз','Определите виды алгоритмов':'Алгоритм түрлерін анықтаңыз','Составьте алгоритм робота-пылесоса':'Робот-шаңсорғыш алгоритмін құрыңыз'};
+    function setLang(lang){if(started){alert(siteLang==='kk'?'Жұмыс басталғаннан кейін тілді өзгертуге болмайды.':'После начала работы язык изменить нельзя.');return}siteLang=lang;localStorage.setItem('algorithms_language',lang);$('ruBtn').classList.toggle('active',lang==='ru');$('kkBtn').classList.toggle('active',lang==='kk');document.documentElement.lang=lang;document.querySelectorAll('h1,h2,.qtitle,.field span,.btn,.eyebrow').forEach(el=>{if(!el.dataset.ru)el.dataset.ru=el.textContent.trim();el.textContent=lang==='kk'?(KZ[el.dataset.ru]||el.dataset.ru):el.dataset.ru})}
+    function statePrefix(){return `algorithms_${studentNumber.value||'none'}_`}
+    function submittedKey(){return statePrefix()+'submitted'}
+    function showTime(){$('timer').textContent=`${String(Math.floor(remaining/60)).padStart(2,'0')}:${String(remaining%60).padStart(2,'0')}`;$('timer').style.background=remaining<=300?'#b91c1c':'#07132f'}
+    function startTimer(){if(started)return;started=true;$('ruBtn').disabled=true;$('kkBtn').disabled=true;timerId=setInterval(()=>{remaining--;showTime();if(remaining===300)alert(siteLang==='kk'?'Жұмыстың аяқталуына 5 минут қалды.':'До окончания работы осталось 5 минут.');if(remaining<=0)timeoutWork()},1000)}
+    function stopTimer(){clearInterval(timerId);timerId=null}
+    function closeWarning(){$('warningOverlay').classList.remove('show')}
+    function registerViolation(reason){if(!started||submitting||localStorage.getItem(submittedKey())==='1'||/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent))return;violationCount++;if(violationCount===1){$('warningText').textContent=reason+'. '+(siteLang==='kk'?'Бұл бірінші ескерту. Қайталанса жұмыс бұғатталады.':'Это первое предупреждение. При повторении работа будет заблокирована.');$('warningOverlay').classList.add('show')}else blockWork(reason)}
+    function blockWork(reason){stopTimer();localStorage.setItem(submittedKey(),'1');localStorage.setItem(statePrefix()+'blocked','1');$('quiz').classList.add('locked');$('error').textContent=siteLang==='kk'?'Жұмыс ереже бұзылғандықтан бұғатталды.':'Работа заблокирована из-за нарушения правил.';$('error').classList.add('show');sendData('violation',{total:0,grade:'Заблокировано: '+reason})}
+    function timeoutWork(){stopTimer();localStorage.setItem(submittedKey(),'1');$('quiz').classList.add('locked');$('error').textContent=siteLang==='kk'?'Уақыт аяқталды.':'Время истекло.';$('error').classList.add('show');sendData('timeout',{total:0,grade:'Время истекло'})}
+    function adminUnlock(){let pin=prompt(siteLang==='kk'?'Админ PIN-кодын енгізіңіз:':'Введите PIN-код администратора:');if(pin!=='2026'){if(pin!==null)alert(siteLang==='kk'?'PIN-код қате.':'Неверный PIN-код.');return}let n=prompt(siteLang==='kk'?'1–59 студент нөмірін енгізіңіз:':'Введите номер студента 1–59:');if(!n||n<1||n>59)return;localStorage.removeItem(`algorithms_${n}_submitted`);localStorage.removeItem(`algorithms_${n}_blocked`);localStorage.removeItem(`algorithms_${n}_state`);alert(siteLang==='kk'?'Қайта тапсыру ашылды.':'Повторная попытка открыта.')}
+    function sendData(action,extra={}){if(!RESULTS_URL.startsWith('https://script.google.com/'))return;let p=new URLSearchParams({action,subject:'Алгоритмы',studentName:$('student').value.trim(),group:$('group').value.trim(),studentNumber:studentNumber.value,lang:siteLang,date:new Date().toISOString(),...extra});fetch(RESULTS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:p.toString(),keepalive:true}).catch(()=>{})}
+    function saveState(){if(!studentNumber.value)return;let data={student:$('student').value,group:$('group').value,remaining,html:{q1:$('q1text').value,q2:$('q2text').value,q10:$('q10text').value},seq:[...document.querySelectorAll('.seq')].map(x=>x.value),radios:Object.fromEntries(['q4','q5','q6'].map(n=>[n,document.querySelector(`input[name="${n}"]:checked`)?.value||''])),selects:Object.fromEntries(['q7a','q7b','q8a','q8b','q9a','q9b'].map(id=>[id,$(id).value]))};localStorage.setItem(statePrefix()+'state',JSON.stringify(data))}
+    function restoreState(){let raw=localStorage.getItem(statePrefix()+'state');if(!raw)return;try{let d=JSON.parse(raw);$('student').value=d.student||'';$('group').value=d.group||'';$('q1text').value=d.html?.q1||'';$('q2text').value=d.html?.q2||'';$('q10text').value=d.html?.q10||'';document.querySelectorAll('.seq').forEach((x,i)=>x.value=d.seq?.[i]||'');Object.entries(d.radios||{}).forEach(([n,v])=>{let el=document.querySelector(`input[name="${n}"][value="${v}"]`);if(el)el.checked=true});Object.entries(d.selects||{}).forEach(([id,v])=>$(id).value=v);remaining=Number(d.remaining)||DURATION;showTime();update()}catch(e){}}
+    document.addEventListener('visibilitychange',()=>{if(document.hidden)registerViolation(siteLang==='kk'?'Басқа қойындыға ауысу анықталды':'Обнаружен переход на другую вкладку')});window.addEventListener('blur',()=>registerViolation(siteLang==='kk'?'Терезе фокусын жоғалту анықталды':'Обнаружена потеря фокуса окна'),true);
+    const quiz=document.getElementById('quiz'), bar=document.getElementById('bar'), progressText=document.getElementById('progressText');
+    const radioNames=['q4','q5','q6'];
+    function answered(){let n=radioNames.filter(x=>document.querySelector(`input[name="${x}"]:checked`)).length;n+=['q1text','q2text','q10text'].filter(id=>document.getElementById(id).value.trim()).length;n+=[...document.querySelectorAll('.seq')].every(x=>x.value)?1:0;n+=document.getElementById('q7a').value&&document.getElementById('q7b').value?1:0;n+=document.getElementById('q8a').value&&document.getElementById('q8b').value?1:0;n+=document.getElementById('q9a').value&&document.getElementById('q9b').value?1:0;return n}
+    function update(){const n=answered();progressText.textContent=`Заполнено ${n} из 10`;bar.style.width=`${n*10}%`}
+    quiz.addEventListener('input',()=>{startTimer();update();saveState()});quiz.addEventListener('change',()=>{startTimer();update();saveState()});studentNumber.addEventListener('change',()=>{if(localStorage.getItem(submittedKey())==='1'){alert(siteLang==='kk'?'Бұл студенттің жауабы бұрын қабылданған.':'Ответ этого студента уже принят.');$('quiz').classList.add('locked')}else{$('quiz').classList.remove('locked');restoreState()} });
+    document.querySelectorAll('.seq').forEach(x=>x.addEventListener('input',()=>{x.value=x.value.replace(/[^1-6]/g,'').slice(0,1)}));
+    const norm=s=>s.toLowerCase().replace(/ё/g,'е').replace(/[^а-яa-z0-9−-]+/g,' ').trim();
+    const groupsScore=(text,groups)=>{const t=norm(text);const hit=groups.filter(group=>group.some(word=>t.includes(word))).length;return Math.round(hit/groups.length*10)};
+    const scorers=[
+      ()=>groupsScore(document.getElementById('q1text').value,[['точн','четк','однознач'],['последователь','команд','действ'],['решен','задач','результат','цель']]),
+      ()=>groupsScore(document.getElementById('q2text').value,[['человек','ученик','пользоват'],['компьютер','робот','устройств','машин','программ'],['выполн','понима','команд']]),
+      ()=>Math.round([...document.querySelectorAll('.seq')].filter((x,i)=>Number(x.value)===i+1).length/6*10),
+      ()=>document.querySelector('input[name="q4"]:checked')?.value==='b'?10:0,
+      ()=>document.querySelector('input[name="q5"]:checked')?.value==='b'?10:0,
+      ()=>document.querySelector('input[name="q6"]:checked')?.value==='b'?10:0,
+      ()=>(document.getElementById('q7a').value==='1'?5:0)+(document.getElementById('q7b').value==='le'?5:0),
+      ()=>(document.getElementById('q8a').value==='d'?5:0)+(document.getElementById('q8b').value==='r'?5:0),
+      ()=>(document.getElementById('q9a').value==='b'?5:0)+(document.getElementById('q9b').value==='c'?5:0),
+      ()=>groupsScore(document.getElementById('q10text').value,[['начат','включ','уборк'],['двиг','собир','мусор','очист'],['препятств','объех','повер'],['баз','заряд','вернут']])
+    ];
+    const explanations=['Правильный смысл: алгоритм — точная и понятная последовательность команд, приводящая к решению задачи.','Исполнитель — человек, устройство, робот или программа, способные понимать и выполнять команды.','Правильный порядок: чашка, вода, чай, кипяток, ожидание, удалить пакетик.','До перехода нужно остановиться, посмотреть по сторонам и убедиться в безопасности.','Последовательность «открыть — ввести — сохранить» является линейной.','Число −7 является отрицательным.','Для вывода 1–10: i = 1, условие i ≤ 10.','Отдельные шаги — дискретность; получение итога — результативность.','Сравнение двух чисел — ветвление; повторение 10 раз — цикл.','Полный смысл: начать уборку, двигаться и собирать мусор, объезжать препятствия, вернуться на базу или зарядку.'];
+    quiz.addEventListener('submit',e=>{e.preventDefault();const student=$('student').value.trim(),group=$('group').value.trim(),error=$('error');if(!student||!group||!studentNumber.value||answered()<10){error.textContent=siteLang==='kk'?'Аты-жөніңізді, тобыңызды, нөміріңізді және барлық жауаптарды толтырыңыз.':'Заполните ФИО, группу, номер студента и все ответы.';error.classList.add('show');return}if(localStorage.getItem(submittedKey())==='1'){alert(siteLang==='kk'?'Жауап бұрын қабылданған.':'Ответ уже принят.');return}if(!confirm(siteLang==='kk'?'Жауап бір рет қабылданады. Жібересіз бе?':'Ответ принимается один раз. Отправить?'))return;submitting=true;error.classList.remove('show');const points=scorers.map(f=>f()),percent=points.reduce((a,b)=>a+b,0);let grade=percent>=90?'Отлично — 5':percent>=75?'Хорошо — 4':percent>=50?'Удовлетворительно — 3':'Требуется повторение — 2';$('score').textContent=percent+'%';$('ring').style.setProperty('--score',percent);$('grade').textContent=siteLang==='kk'?(KZ[grade]||grade):grade;$('studentResult').textContent=`${student} · ${group} · №${studentNumber.value} · ${percent}/100`;$('review').innerHTML=points.map((p,i)=>`<div class="review-item ${p===10?'right':'wrong'}"><b>${siteLang==='kk'?'Тапсырма':'Задание'} ${i+1}: ${p}/10</b>${p===10?'':`<br>${explanations[i]}`}</div>`).join('');$('result').classList.add('show');$('result').scrollIntoView({behavior:'smooth'});localStorage.setItem(submittedKey(),'1');localStorage.setItem('algorithmQuizLast',JSON.stringify({student,group,studentNumber:studentNumber.value,percent,points,date:new Date().toISOString()}));sendData('result',{total:percent,grade,points:points.join(',')});stopTimer();$('quiz').classList.add('locked');submitting=false});
+    $('clearBtn').addEventListener('click',()=>{if(confirm(siteLang==='kk'?'Барлық жауаптарды тазалау керек пе?':'Очистить все ответы?')){quiz.reset();localStorage.removeItem(statePrefix()+'state');update()}});setLang(siteLang);showTime();update();setInterval(()=>{if(started&&!submitting){saveState();sendData('progress',{answered:answered(),remaining})}},8000);
+  </script>
+</body>
+</html>
